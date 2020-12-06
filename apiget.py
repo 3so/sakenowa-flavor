@@ -44,11 +44,28 @@ def get_brands(brewery_id):
         selected_brands.insert(0, {"id":"","name":"選択してください","breweryId":""})
         return selected_brands
 
-def get_fravors(brand_id):
+def get_flavors(brand_id):
     url = urls["フレーバーチャート"]
-    responce_fravor_charts = requests.get(url).json()
-    flavor_charts = responce_fravor_charts["flavorChart"]
+    responce_flavor_charts = requests.get(url).json()
+    flavor_charts = responce_flavor_charts["flavorChart"]
     for flavor_chart in flavor_charts:
         if flavor_chart["brandId"] == brand_id:
-            return flavor_chart["brandId"]
-    return {}
+            return flavor_chart
+    return {"brandId":""}
+
+def search_brands(input_brand):
+    if input_brand == "":
+        return [{"id":"","name":"------","breweryId":""}]
+    else:
+        url = urls["銘柄一覧"]
+        responce_brands = requests.get(url).json()
+        brands = responce_brands["brands"]
+        search_brands = []
+        for brand in brands:
+            if input_brand in brand["name"]:
+                search_brands.append(brand)
+        if search_brands == []:
+            return [{"id":"","name":"------","breweryId":""}]
+        else:
+            search_brands.insert(0, {"id":"","name":"選択してください","breweryId":""})
+            return search_brands
