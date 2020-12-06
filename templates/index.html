@@ -2,12 +2,12 @@
 {% block content %}
 <div class="container" style="background: pink; height: 100vh;">
   <div style="height:10%">
-    <h1 class="text-center" style="height: 10%;">test</h1>
+    <h1 class="text-center" style="height: 10%;">sakenowa flavor</h1>
   </div>
     <div class="row" style="height: 90%;">
     <div class="col-md-4" style="background: orange;">
       <!-- 地域選択フォーム -->
-      <form action="/select_area" method="post" class="form-inline">
+      <form action="/select_area" method="post">
         <div class="form-group m-3">
           <label for="area">地域：</label>
           <select name="area" onchange="submit(this.form)" class="form-control">
@@ -24,7 +24,7 @@
       </form>
       <!-- //地域選択フォーム -->
       <!-- 蔵元選択フォーム -->
-      <form action="/select_brewery" method="post" class="form-inline">
+      <form action="/select_brewery" method="post">
         <div class="form-group m-3">
           <label for="brewery">蔵元：</label>
           <select name="brewery" onchange="submit(this.form)" class="form-control">
@@ -42,7 +42,7 @@
       </form>
       <!-- //蔵元選択フォーム -->
       <!-- 銘柄選択フォーム -->
-      <form action="/select_brand" method="post" class="form-inline">
+      <form action="/select_brand" method="post">
         <div class="form-group m-3">
           <label for="brand">銘柄：</label>
           <select name="brand" onchange="submit(this.form)" class="form-control">
@@ -60,6 +60,32 @@
         </div>
       </form>
       <!-- //銘柄選択フォーム -->
+      <!-- 銘柄名入力フォーム -->
+      <form action="/search_brand" method="post" class="inline">
+        <div class="form-group">
+          <label for="input_brand">銘柄入力検索：</label>
+          <input name="input_brand" type="text" class="form-control" placeholder="銘柄を入力してください"
+            {% if input_brand %}
+              value="{{ input_brand }}"
+            {% endif %}
+          >
+          <button type="submit" class="btn btn-primary">検索する</button>
+        </div>
+      </form>
+      <!-- //銘柄名入力フォーム-->
+      <!-- 銘柄名選択フォーム -->
+      {% if search_brands != "" %}
+      <form>
+        <div class="form-group">
+          <select name="brand_name" onchange="submit(this.form)" class="form-control">
+            {% for search_brand in search_brands %}
+              <option value="{{ search_brand["id"] }}">{{ search_brand["name"] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </form>
+      {% endif %}
+      <!-- //銘柄名選択フォーム -->
       <!-- 初期化ボタン -->
       <div>
         <button type="button" class="btn btn-primary" onclick="location.href='/'">初期化</button>
@@ -67,7 +93,7 @@
       <!-- //初期化ボタン -->
     </div>
     <div class="col-md-8 d-flex justify-content-center align-items-center" style="background: brown;">
-      {{area_id}},{{brewery_id}},{{brand_id}}
+      <p>{{area_id}},{{brewery_id}},{{brand_id}}</p>
     </div>
   </div>
 </div>
