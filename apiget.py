@@ -47,7 +47,7 @@ def get_brands(brewery_id):
 def get_flavors(brand_id):
     url = urls["フレーバーチャート"]
     responce_flavor_charts = requests.get(url).json()
-    flavor_charts = responce_flavor_charts["flavorChart"]
+    flavor_charts = responce_flavor_charts["flavorCharts"]
     for flavor_chart in flavor_charts:
         if flavor_chart["brandId"] == brand_id:
             return flavor_chart

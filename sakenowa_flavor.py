@@ -68,8 +68,9 @@ def select_brand():
     areas = apiget.get_area()
     breweries = apiget.get_breweries(area_id)
     brands = apiget.get_brands(brewery_id)
+    flavor = apiget.get_flavors(brand_id)
     return render_template('index.html',
-                            areas=areas, breweries=breweries, brands=brands,area_id=area_id, brewery_id=brewery_id, brand_id=brand_id, search_brands=search_brands)
+                            areas=areas, breweries=breweries, brands=brands,area_id=area_id, brewery_id=brewery_id, brand_id=brand_id, search_brands=search_brands, flavor=flavor)
 
 # 絞り込み検索終わり
 
@@ -79,13 +80,32 @@ def search_brand():
     area_id = ""
     brewery_id = ""
     brand_id = ""
+    selected_brand_id = ""
     input_brand = request.form['input_brand']
     search_brands = apiget.search_brands(input_brand)
     areas = apiget.get_area()
     breweries = apiget.get_breweries(area_id)
     brands = apiget.get_brands(brewery_id)
     return render_template('index.html',
-                            areas=areas, breweries=breweries, brands=brands,area_id=area_id, brewery_id=brewery_id, brand_id=brand_id, search_brands=search_brands, input_brand=input_brand)
+                            areas=areas, breweries=breweries, brands=brands,area_id=area_id, brewery_id=brewery_id, brand_id=brand_id, selected_brand_id=selected_brand_id, search_brands=search_brands, input_brand=input_brand)
+
+@app.route('/select_search_brand', methods=['GET', 'POST'])
+def select_search_brand():
+    area_id = ""
+    brewery_id = ""
+    brand_id = ""
+    selected_brand_id = ""
+    input_brand = request.form['input_brand']
+    search_brands = apiget.search_brands(input_brand)
+    if request.form['selected_brand'].isdecimal():
+        selected_brand_id = int(request.form['selected_brand'])
+    areas = apiget.get_area()
+    breweries = apiget.get_breweries(area_id)
+    brands = apiget.get_brands(brewery_id)
+    flavor = apiget.get_flavors(selected_brand_id)
+    return render_template('index.html',
+                            areas=areas, breweries=breweries, brands=brands,area_id=area_id, brewery_id=brewery_id, brand_id=brand_id, selected_brand_id=selected_brand_id, search_brands=search_brands, input_brand=input_brand, flavor=flavor)
+
 
 if __name__ == '__main__':
     app.debug = True
