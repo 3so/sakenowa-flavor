@@ -109,8 +109,9 @@ def select_search_brand():
     brands = apiget.get_brands(brewery_id)
     flavor = apiget.get_flavors(selected_brand_id, search_brands)
     flavor_chart = fc.get_flavor_chart(flavor)
+    flavor_tags = apiget.get_flavor_tags(selected_brand_id)
     return render_template('index.html',
-                            areas=areas, breweries=breweries, brands=brands,area_id=area_id, brewery_id=brewery_id, brand_id=brand_id, selected_brand_id=selected_brand_id, search_brands=search_brands, input_brand=input_brand, flavor=flavor, flavor_chart=flavor_chart)
+                            areas=areas, breweries=breweries, brands=brands,area_id=area_id, brewery_id=brewery_id, brand_id=brand_id, selected_brand_id=selected_brand_id, search_brands=search_brands, input_brand=input_brand, flavor=flavor, flavor_chart=flavor_chart, flavor_tags=flavor_tags)
 
 
 if __name__ == '__main__':
