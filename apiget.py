@@ -1,5 +1,6 @@
 import requests
 import json
+import flavor_chart
 
 urls = {
     "地域一覧": "https://muro.sakenowa.com/sakenowa-data/api/areas",
@@ -22,8 +23,12 @@ def get_breweries(area_id):
     breweries = responce_breweries["breweries"]
     selected_breweries = []
     for brewery in breweries:
-        if brewery["areaId"] == area_id and brewery["name"] != "":
-            selected_breweries.append(brewery)
+        if brewery["areaId"] == area_id:
+            if brewery["name"] != "":
+                selected_breweries.append(brewery)
+            else:
+                brewery["name"] = "その他酒蔵"
+                selected_breweries.append(brewery)
     if selected_breweries == []:
         return [{"id":"","name":"------","areaId":""}]
     else:
@@ -44,14 +49,38 @@ def get_brands(brewery_id):
         selected_brands.insert(0, {"id":"","name":"選択してください","breweryId":""})
         return selected_brands
 
-def get_flavors(brand_id):
+def get_flavors(brand_id, brands):
     url = urls["フレーバーチャート"]
     responce_flavor_charts = requests.get(url).json()
-    flavor_charts = responce_flavor_charts["flavorChart"]
+    flavor_charts = responce_flavor_charts["flavorCharts"]
+    brand_name = ""
+    for brand in brands:
+        if brand["id"] == brand_id:
+            brand_name = brand["name"]
     for flavor_chart in flavor_charts:
         if flavor_chart["brandId"] == brand_id:
+            flavor_chart["flavor"] = "true"
+            flavor_chart["brandName"] = brand_name
             return flavor_chart
-    return {"brandId":""}
+    return { "brandId":brand_id, "brandName":brand_name, "flavor":""}
+
+def get_flavor_tags(brand_id):
+    url = urls["フレーバータグ"]
+    responce_flavor_tags = requests.get(url).json()
+    flavor_tags = responce_flavor_tags["tags"]
+    url = urls["銘柄ごとフレーバータグ"]
+    responce_brand_flavor_tags = requests.get(url).json()
+    brand_flavor_tags = responce_brand_flavor_tags["flavorTags"]
+    selected_brand_flavor_tag = { "brandId" : brand_id }
+    tag_names = []
+    for bland_flavor_tag in brand_flavor_tags:
+        if bland_flavor_tag["brandId"] == brand_id:
+            for tag in bland_flavor_tag["tagIds"]:
+                for flavor_tag in flavor_tags:
+                    if tag == flavor_tag["id"]:
+                        tag_names.append(flavor_tag["tag"])
+            selected_brand_flavor_tag["tag_names"] = tag_names
+            return selected_brand_flavor_tag
 
 def search_brands(input_brand):
     if input_brand == "":
