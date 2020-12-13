@@ -7,7 +7,7 @@ urls = {
     "銘柄一覧": "https://muro.sakenowa.com/sakenowa-data/api/brands",
     "蔵元一覧": "https://muro.sakenowa.com/sakenowa-data/api/breweries",
     "ランキング": "https://muro.sakenowa.com/sakenowa-data/api/rankings",
-    "フレーバーチャート": "https://muro.sakenowa.com/sakenowa-data/api/flavor-charts",
+    "フレーバー情報": "https://muro.sakenowa.com/sakenowa-data/api/flavor-charts",
     "フレーバータグ": "https://muro.sakenowa.com/sakenowa-data/api/flavor-tags",
     "銘柄ごとフレーバータグ": "https://muro.sakenowa.com/sakenowa-data/api/brand-flavor-tags",
     }
@@ -50,18 +50,18 @@ def get_brands(brewery_id):
         return selected_brands
 
 def get_flavors(brand_id, brands):
-    url = urls["フレーバーチャート"]
-    responce_flavor_charts = requests.get(url).json()
-    flavor_charts = responce_flavor_charts["flavorCharts"]
+    url = urls["フレーバー情報"]
+    responce_flavors = requests.get(url).json()
+    flavors = responce_flavors["flavorCharts"]
     brand_name = ""
     for brand in brands:
         if brand["id"] == brand_id:
             brand_name = brand["name"]
-    for flavor_chart in flavor_charts:
-        if flavor_chart["brandId"] == brand_id:
-            flavor_chart["flavor"] = "true"
-            flavor_chart["brandName"] = brand_name
-            return flavor_chart
+    for flavor in flavors:
+        if flavor["brandId"] == brand_id:
+            flavor["flavor"] = "true"
+            flavor["brandName"] = brand_name
+            return flavor
     return { "brandId":brand_id, "brandName":brand_name, "flavor":""}
 
 def get_flavor_tags(brand_id):
