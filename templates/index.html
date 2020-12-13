@@ -1,132 +1,158 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container" style="background: pink; height: 100vh;">
-  <div style="height:10%">
-    <h1 class="text-center" style="height: 10%;">sakenowa flavor</h1>
-  </div>
-    <div class="row" style="height: 90%;">
-    <div class="col-md-4" style="background: orange;">
 
-    <!-- 絞り込み検索フォーム -->
+<!-- ナビゲーションバー -->
+<nav class="navbar navbar-dark" style="background-color: #004c71;">
+  <span class="navbar-brand">日本酒フレーバー検索</span>
+</nav>
+<!-- //ナビゲーションバーおわり -->
 
-      <!-- 地域選択フォーム -->
-      <form action="/select_area" method="post">
-        <div class="form-group m-3">
-          <label for="area">地域：</label>
-          <select name="area" onchange="submit(this.form)" class="form-control">
-            <option value="">選択してください</option>
-            {% for area in areas %}
-              {% if area["id"] == area_id %}
-                <option value="{{ area["id"] }}" selected>{{ area["name"] }}</option>
-              {% else %}
-                <option value="{{ area["id"] }}">{{ area["name"] }}</option>
-              {% endif %}
-            {% endfor %}
-          </select>
-        </div>
-      </form>
-      <!-- //地域選択フォーム -->
 
-      <!-- 蔵元選択フォーム -->
-      <form action="/select_brewery" method="post">
-        <div class="form-group m-3">
-          <label for="brewery">蔵元：</label>
-          <select name="brewery" onchange="submit(this.form)" class="form-control">
-            {% for brewery in breweries %}
-              {% if brewery["id"] == brewery_id %}
-                <option value="{{ brewery["id"] }}" selected>{{ brewery["name"] }}</option>
-              {% else %}
-                <option value="{{ brewery["id"] }}">{{ brewery["name"] }}</option>
-              {% endif %}
-            {% endfor %}
-          </select>
-          <!-- 地域情報の維持 -->
-          <input name="area" type="hidden" value="{{ area_id }}">
-        </div>
-      </form>
-      <!-- //蔵元選択フォーム -->
+<div class="container-fluid border-bottom">
+  <div class="row">
 
-      <!-- 銘柄選択フォーム -->
-      <form action="/select_brand" method="post">
-        <div class="form-group m-3">
-          <label for="brand">銘柄：</label>
-          <select name="brand" onchange="submit(this.form)" class="form-control">
-            {% for brand in brands %}
-              {% if brand["id"] == brand_id %}
-                <option value="{{ brand["id"] }}" selected>{{ brand["name"] }}</option>
-              {% else %}
-                <option value="{{ brand["id"] }}">{{ brand["name"] }}</option>
-              {% endif %}
-            {% endfor %}
-          </select>
-          <!-- 地域情報、蔵元情報の維持 -->
-          <input name="area" type="hidden" value="{{ area_id }}">
-          <input name="brewery" type="hidden" value="{{ brewery_id }}">
-        </div>
-      </form>
-      <!-- //銘柄選択フォーム -->
-
-    <!-- //絞り込み検索フォームおわり -->
-
-    <!-- 銘柄入力検索フォーム -->
-
-      <!-- 銘柄名入力フォーム -->
-      <form action="/search_brand" method="post" class="inline">
-        <div class="form-group">
-          <label for="input_brand">銘柄入力検索：</label>
-          <input name="input_brand" type="text" class="form-control" placeholder="銘柄を入力してください"
-            {% if input_brand %}
-              value="{{ input_brand }}"
-            {% endif %}
-          >
-          <button type="submit" class="btn btn-primary">検索する</button>
-        </div>
-      </form>
-      <!-- //銘柄名入力フォーム-->
-
-      <!-- 銘柄名選択フォーム -->
-      <form action="/select_search_brand" method="post">
-        <div class="form-group">
-            <select name="selected_brand" onchange="submit(this.form)" class="form-control">
-              {% for search_brand in search_brands %}
-                {% if search_brand["id"] == selected_brand_id %}
-                  <option value="{{ search_brand["id"] }}" selected>{{ search_brand["name"] }}</option>
+    <!-- 銘柄検索フォーム -->
+    <div class="col-lg-4 border-right">
+      <!-- 絞り込み検索フォーム -->
+      <div class="m-3 border-bottom">
+        <h4>絞り込み検索</h4>
+        <!-- 地域選択フォーム -->
+        <form action="/select_area" method="post">
+          <div class="form-group">
+            <label for="area">地域：</label>
+            <select name="area" onchange="submit(this.form)" class="form-control">
+              <option value="">選択してください</option>
+              {% for area in areas %}
+                {% if area["id"] == area_id %}
+                  <option value="{{ area["id"] }}" selected>{{ area["name"] }}</option>
                 {% else %}
-                  <option value="{{ search_brand["id"] }}">{{ search_brand["name"] }}</option>
+                  <option value="{{ area["id"] }}">{{ area["name"] }}</option>
                 {% endif %}
               {% endfor %}
             </select>
-            <!-- 入力情報の維持-->
-            <input name="input_brand" type="hidden" value="{{input_brand}}">
-        </div>
-      </form>
-      <!-- //銘柄名選択フォーム -->
+          </div>
+        </form>
+        <!-- //地域選択フォーム -->
 
-    <!-- //銘柄名入力検索フォームおわり -->
+        <!-- 蔵元選択フォーム -->
+        <form action="/select_brewery" method="post">
+          <div class="form-group">
+            <label for="brewery">蔵元：</label>
+            <select name="brewery" onchange="submit(this.form)" class="form-control">
+              {% for brewery in breweries %}
+                {% if brewery["id"] == brewery_id %}
+                  <option value="{{ brewery["id"] }}" selected>{{ brewery["name"] }}</option>
+                {% else %}
+                  <option value="{{ brewery["id"] }}">{{ brewery["name"] }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            <!-- 地域情報の維持 -->
+            <input name="area" type="hidden" value="{{ area_id }}">
+          </div>
+        </form>
+        <!-- //蔵元選択フォーム -->
 
-    <!-- 初期化ボタン -->
-      <div>
-        <button type="button" class="btn btn-primary" onclick="location.href='/'">初期化</button>
+        <!-- 銘柄選択フォーム -->
+        <form action="/select_brand" method="post">
+          <div class="form-group">
+            <label for="brand">銘柄：</label>
+            <select name="brand" onchange="submit(this.form)" class="form-control">
+              {% for brand in brands %}
+                {% if brand["id"] == brand_id %}
+                  <option value="{{ brand["id"] }}" selected>{{ brand["name"] }}</option>
+                {% else %}
+                  <option value="{{ brand["id"] }}">{{ brand["name"] }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            <!-- 地域情報、蔵元情報の維持 -->
+            <input name="area" type="hidden" value="{{ area_id }}">
+            <input name="brewery" type="hidden" value="{{ brewery_id }}">
+          </div>
+        </form>
+        <!-- //銘柄選択フォーム -->
+
       </div>
-    <!-- //初期化ボタン -->
+      <!-- //絞り込み検索フォームおわり -->
+
+      <!-- 銘柄入力検索フォーム -->
+      <div class="m-3 border-bottom">
+        <h4>銘柄名入力検索</h4>
+        <!-- 銘柄名入力フォーム -->
+        <form action="/search_brand" method="post" class="inline">
+          <div class="form-group">
+            <input name="input_brand" type="text" class="form-control" placeholder="銘柄を入力してください"
+              {% if input_brand %}
+                value="{{ input_brand }}"
+              {% endif %}
+            >
+            <button type="submit" class="btn btn-primary mt-1">検索する</button>
+          </div>
+        </form>
+        <!-- //銘柄名入力フォーム-->
+
+        <!-- 銘柄名選択フォーム -->
+        <form action="/select_search_brand" method="post">
+          <div class="form-group">
+              <select name="selected_brand" onchange="submit(this.form)" class="form-control">
+                {% for search_brand in search_brands %}
+                  {% if search_brand["id"] == selected_brand_id %}
+                    <option value="{{ search_brand["id"] }}" selected>{{ search_brand["name"] }}</option>
+                  {% else %}
+                    <option value="{{ search_brand["id"] }}">{{ search_brand["name"] }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <!-- 入力情報の維持-->
+              <input name="input_brand" type="hidden" value="{{input_brand}}">
+          </div>
+        </form>
+        <!-- //銘柄名選択フォーム -->
+      </div>
+      <!-- //銘柄名入力検索フォームおわり -->
+
+      <!-- 初期化ボタン -->
+        <div class="m-3">
+          <h4>検索情報の初期化</h4>
+          <button type="button" class="btn btn-primary" onclick="location.href='/'">初期化</button>
+        </div>
+      <!-- //初期化ボタンおわり -->
+    </div>
+    <!-- //銘柄検索フォームおわり -->
 
     <!-- フレーバー情報の表示 -->
-    </div>
-    <div class="col-md-8 d-flex flex-column justify-content-center align-items-center" style="background: brown;">
-      <p>{{area_id}},{{brewery_id}},{{brand_id}}</p>
-        {% if flavor_tags %}
-          {% for tag in flavor_tags["tag_names"] %}
-            {{tag}},
-          {% endfor %}
-        {% endif %}
-        {% if flavor %}
+    <div class="col-lg-8 d-flex flex-column justify-content-center align-items-center border-top">
+
+      {% if flavor %}
+        <!-- フレーバーチャートの表示 -->
           {% if flavor["flavor"] == "" %}
-            <p>{{ flavor["brandName"] }}のフレーバー情報はありません</p>
+            <p>{{ flavor["brandName"] }}のフレーバーチャートはありません</p>
           {% else %}
-            <p>{{ flavor["brandName"] }}</p>
+            <h2 class="mt-3">{{ flavor["brandName"] }}</h2>
             {{ flavor_chart | safe }}
           {% endif %}
-        {% endif %}
+        <!-- //フレーバーチャートの表示おわり -->
+
+        <!-- フレーバータグの表示 -->
+        <div class="m-3 d-flex flex-column justify-content-center align-items-center">
+          <p>フレーバータグ</p>
+          {% if flavor_tags and flavor_tags["tag_names"] %}
+            <div>
+              {% for tag in flavor_tags["tag_names"] %}
+                <span class="badge badge-primary">{{tag}}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p>情報がありません</p>
+          {% endif %}
+        </div>
+        <!-- //フレーバータグの表示おわり -->
+      {% else %}
+        <p class="m-3">銘柄を選択してください</p>
+      {% endif %}
+
+
     </div>
     <!-- //フレーバー情報の表示 -->
 
