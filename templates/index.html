@@ -21,7 +21,7 @@
           <div class="form-group">
             <label for="area">地域：</label>
             <select name="area" onchange="submit(this.form)" class="form-control">
-              <option value="">選択してください</option>
+              <option disabled selected value>選択してください</option>
               {% for area in areas %}
                 {% if area["id"] == area_id %}
                   <option value="{{ area["id"] }}" selected>{{ area["name"] }}</option>
@@ -40,7 +40,9 @@
             <label for="brewery">蔵元：</label>
             <select name="brewery" onchange="submit(this.form)" class="form-control">
               {% for brewery in breweries %}
-                {% if brewery["id"] == brewery_id %}
+                {% if brewery["id"] == "" %}
+                  <option disabled selected value>{{ brewery["name"] }}</option>
+                {% elif brewery["id"] == brewery_id %}
                   <option value="{{ brewery["id"] }}" selected>{{ brewery["name"] }}</option>
                 {% else %}
                   <option value="{{ brewery["id"] }}">{{ brewery["name"] }}</option>
@@ -59,7 +61,9 @@
             <label for="brand">銘柄：</label>
             <select name="brand" onchange="submit(this.form)" class="form-control">
               {% for brand in brands %}
-                {% if brand["id"] == brand_id %}
+                {% if brand["id"] == "" %}
+                  <option disabled selected value>{{ brand["name"] }}</option>
+                {% elif brand["id"] == brand_id %}
                   <option value="{{ brand["id"] }}" selected>{{ brand["name"] }}</option>
                 {% else %}
                   <option value="{{ brand["id"] }}">{{ brand["name"] }}</option>
@@ -97,7 +101,9 @@
           <div class="form-group">
               <select name="selected_brand" onchange="submit(this.form)" class="form-control">
                 {% for search_brand in search_brands %}
-                  {% if search_brand["id"] == selected_brand_id %}
+                  {% if search_brand["id"] == "" %}
+                    <option disabled selected value>{{ search_brand["name"] }}</option>
+                  {% elif search_brand["id"] == selected_brand_id %}
                     <option value="{{ search_brand["id"] }}" selected>{{ search_brand["name"] }}</option>
                   {% else %}
                     <option value="{{ search_brand["id"] }}">{{ search_brand["name"] }}</option>
