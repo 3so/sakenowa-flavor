@@ -1,1 +1,0 @@
-web: gunicorn sakenowa_flavor:app --log-file -

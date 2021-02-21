@@ -9,7 +9,7 @@
 の2点から確認することができる。
 
 # URL
-https://sake-flavor-app.herokuapp.com/
+http://54.168.42.102/
 
 # 利用方法
 「絞り込み検索」「銘柄名入力検索」の2種類の検索方法で日本酒の銘柄を検索できる。
@@ -124,7 +124,7 @@ https://sake-flavor-app.herokuapp.com/
 ## 動作環境
 ***
 Pythonのバージョンは以下の通り。
-- Python 3.9.0
+- Python 3.7.9
 
 必要な外部ライブラリは以下の通り。
 - flask
@@ -142,3 +142,8 @@ Pythonのバージョンは以下の通り。
     pip install pandas
     pip install plotly
     pip install gunicorn
+
+また、pipenvを導入することで上記のライブラリをまとめて導入可能。
+
+    pip install pipenv
+    pipenv install
